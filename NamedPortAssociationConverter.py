@@ -1,6 +1,8 @@
 #new functionality: also converts text in clipboard from a module declaration into a module instatiation
 #with named port association
 
+##use with flag tb to convert a module into a dut
+
 #this script converts an implicitly defined port association into named port assocation syntax
 #for example: example dut(ain, bin, cout) ==> example dut(.ain(ain), .bin(bin), .cout(cout))
 #also handles line comments for example:
@@ -90,7 +92,7 @@ if (len(sys.argv)==1):
                 toWrite += convert(line.strip("\n\t ")) + "\n"
 
     pyperclip.copy(toWrite);
-elif (str(sys.argv[1])=="tb"):
+elif ("tb" in str(sys.argv[1])):
     f = pyperclip.paste().split("\n")
     toWrite = ""
     for line in f:
@@ -110,24 +112,3 @@ elif (str(sys.argv[1])=="tb"):
 
     pyperclip.copy(toWrite);
 
-
-
-
-f = open ("data.txt", "r")
-toWrite = ""
-
-for line in f:
-    if line == "\n":
-        toWrite += line
-    else:
-        S = line.split("//")
-        if len(S)==2:
-            toWrite += convert(S[0]) + "//" + S[1]
-        else:
-            toWrite += convert(line.strip("\n\t ")) + "\n"
-
-f.close()
-
-f = open ("data.txt","w")
-f.write(toWrite)
-f.close()
